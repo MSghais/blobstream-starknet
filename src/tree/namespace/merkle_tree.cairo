@@ -49,49 +49,63 @@ trait NamespaceEqTrait<Namespace>{
 impl NamespaceEq of NamespaceEqTrait<Namespace>  {
     #[inline(always)]
     fn eq(self:@Namespace, namespace:Namespace)-> bool {
-        let bytes= self.to_bytes();
-        let keccak=bytes.keccak();
-        let other_bytes=namespace.to_bytes();
-        let keccak_2=other_bytes.keccak();
+        let keccak=self.to_keccak();
+        let keccak_2=namespace.to_keccak();
         keccak == keccak_2
     }
 
     fn ne(self:@Namespace, namespace:Namespace)-> bool {
-        let bytes= self.to_bytes();
-        let keccak=bytes.keccak();
-        let other_bytes=namespace.to_bytes();
-        let keccak_2=other_bytes.keccak();
+        let keccak= self.to_keccak();
+        let keccak_2=namespace.to_keccak();
         keccak != keccak_2
     }
 }
 // TODO: #28
-// impl NamespacePartialOrd of PartialOrd<Namespace> {
-//     #[inline(always)]
-//     fn le(lhs: Namespace, rhs: Namespace) -> bool {
-//     }
-//     #[inline(always)]
-//     fn ge(lhs: Namespace, rhs: Namespace) -> bool {
-//     }
-//     #[inline(always)]
-//     fn lt(lhs: Namespace, rhs: Namespace) -> bool {
-//     }
-//     #[inline(always)]
-//     fn gt(lhs: Namespace, rhs: Namespace) -> bool {
-//     }
-// }
+impl NamespacePartialOrd of PartialOrd<Namespace> {
+     #[inline(always)]
+    fn le(lhs: Namespace, rhs: Namespace) -> bool {
+        let ulsh=lhs.to_keccak();
+        let ursh=rhs.to_keccak();
+        ursh <= ulsh
+    }
+    #[inline(always)]
+    fn ge(lhs: Namespace, rhs: Namespace) -> bool {
+        let ulsh=lhs.to_keccak();
+        let ursh=rhs.to_keccak();
+        ursh >= ulsh
+    }
+    #[inline(always)]
+    fn lt(lhs: Namespace, rhs: Namespace) -> bool {
+        let ulsh=lhs.to_keccak();
+        let ursh=rhs.to_keccak();
+        ursh < ulsh
+    }
+    #[inline(always)]
+    fn gt(lhs: Namespace, rhs: Namespace) -> bool {
+        let ulsh=lhs.to_keccak();
+        let ursh=rhs.to_keccak();
+        ursh > ulsh
+    }
+}
 
-// impl NamespacePartialEq of PartialEq<Namespace> {
-//     #[inline(always)]
-//     fn eq(lhs: @Namespace, rhs: @Namespace) -> bool {
-//     }
-//     #[inline(always)]
-//     fn ne(lhs: @Namespace, rhs: @Namespace) -> bool {
-//     }
-// }
+impl NamespacePartialEq of PartialEq<Namespace> {
+    #[inline(always)]
+    fn eq(lhs: @Namespace, rhs: @Namespace) -> bool {
+        let ulsh=lhs.to_keccak();
+        let ursh=rhs.to_keccak();
+        ursh == ulsh;
+    }
+    #[inline(always)]
+    fn ne(lhs: @Namespace, rhs: @Namespace) -> bool {
+        let ulsh=lhs.to_keccak();
+        let ursh=rhs.to_keccak();
+        ursh != ulsh
+    }
+}
 
-// // compares two `NamespaceNode`s
-// fn namespace_node_eq(first: NamespaceNode, second: NamespaceNode) -> bool {
-//     return first.min.eq(second.min) && first.max.eq(second.max) && (first.digest == second.digest);
-// }
+// compares two `NamespaceNode`s
+fn namespace_node_eq(first: NamespaceNode, second: NamespaceNode) -> bool {
+    return first.min.eq(second.min) && first.max.eq(second.max) && (first.digest == second.digest);
+}
 
 
